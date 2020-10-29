@@ -45,3 +45,57 @@ func (mr *MockSysOpsProviderMockRecorder) GetEnvVar(s interface{}) *gomock.Call 
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetEnvVar", reflect.TypeOf((*MockSysOpsProvider)(nil).GetEnvVar), s)
 }
+
+// GetPathSep mocks base method
+func (m *MockSysOpsProvider) GetPathSep() string {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetPathSep")
+	ret0, _ := ret[0].(string)
+	return ret0
+}
+
+// GetPathSep indicates an expected call of GetPathSep
+func (mr *MockSysOpsProviderMockRecorder) GetPathSep() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPathSep", reflect.TypeOf((*MockSysOpsProvider)(nil).GetPathSep))
+}
+
+// CleanPath mocks base method
+func (m *MockSysOpsProvider) CleanPath(path string) string {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CleanPath", path)
+	ret0, _ := ret[0].(string)
+	return ret0
+}
+
+// CleanPath indicates an expected call of CleanPath
+func (mr *MockSysOpsProviderMockRecorder) CleanPath(path interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CleanPath", reflect.TypeOf((*MockSysOpsProvider)(nil).CleanPath), path)
+}
+
+// FileExists mocks base method
+func (m *MockSysOpsProvider) FileExists(path string) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FileExists", path)
+	ret0, _ := ret[0].(bool)
+	return ret0
+}
+
+// FileExists indicates an expected call of FileExists
+func (mr *MockSysOpsProviderMockRecorder) FileExists(path interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FileExists", reflect.TypeOf((*MockSysOpsProvider)(nil).FileExists), path)
+}
+
+// Log mocks base method
+func (m *MockSysOpsProvider) Log(message string) {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "Log", message)
+}
+
+// Log indicates an expected call of Log
+func (mr *MockSysOpsProviderMockRecorder) Log(message interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Log", reflect.TypeOf((*MockSysOpsProvider)(nil).Log), message)
+}
