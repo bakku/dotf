@@ -3,15 +3,22 @@ package main
 import (
 	"fmt"
 	"os"
+
+	"bakku.dev/dotf/commands"
+	"bakku.dev/dotf/sysop"
 )
 
 func main() {
 	if len(os.Args) != 2 {
 		printHelp()
 	} else {
+		opProvider := &sysop.SysOpProvider{}
+
+		var err error
+
 		switch os.Args[1] {
 		case "init":
-			fmt.Println("initing")
+			err = commands.Init(opProvider)
 		case "push":
 			fmt.Println("pushing")
 		case "pull":
@@ -22,6 +29,11 @@ func main() {
 			fmt.Println("deleting")
 		default:
 			printHelp()
+		}
+
+		if err != nil {
+			fmt.Printf("%v\n", err)
+			os.Exit(-1)
 		}
 	}
 }
