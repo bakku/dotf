@@ -55,7 +55,7 @@ func TestInit_ShouldFailIfRepoDoesNotExist(t *testing.T) {
 	m.EXPECT().Log("Insert path to dotfile repo: ")
 	m.EXPECT().ReadLine().Return("invalid", nil)
 	m.EXPECT().PathExists(gomock.Eq("invalid")).Return(false)
-	
+
 	err := commands.Init(m)
 
 	if err == nil {

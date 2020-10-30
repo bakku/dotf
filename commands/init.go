@@ -38,6 +38,6 @@ func createDotfile(sys dotf.SysOpsProvider, dotfilePath string) error {
 	if !sys.PathExists(repoPath) {
 		return fmt.Errorf("init: path %v does not exist", repoPath)
 	}
-	
+
 	return nil
 }

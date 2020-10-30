@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-type SysOpProvider struct {}
+type SysOpProvider struct{}
 
 func (sop *SysOpProvider) GetEnvVar(s string) string {
 	return os.Getenv(s)
