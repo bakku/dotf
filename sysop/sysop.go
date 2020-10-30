@@ -1,9 +1,11 @@
 package sysop
 
 import (
+	"bufio"
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 type SysOpProvider struct {}
@@ -16,12 +18,8 @@ func (sop *SysOpProvider) GetPathSep() string {
 	return string(filepath.Separator)
 }
 
-func (sop *SysOpProvider) CleanPath(path string) string {
-	return filepath.Clean(path)
-}
-
-func (sop *SysOpProvider) FileExists(path string) bool {
-	if _, err := os.Stat(path); err == nil {
+func (sop *SysOpProvider) PathExists(path string) bool {
+	if _, err := os.Stat(filepath.Clean(path)); err == nil {
 		return true
 	}
 
@@ -29,5 +27,16 @@ func (sop *SysOpProvider) FileExists(path string) bool {
 }
 
 func (sop *SysOpProvider) Log(message string) {
-	fmt.Println(message)
+	fmt.Print(message)
+}
+
+func (sop *SysOpProvider) ReadLine() (string, error) {
+	reader := bufio.NewReader(os.Stdin)
+
+	text, err := reader.ReadString('\n')
+	if err != nil {
+		return "", fmt.Errorf("error while reading: %v", err)
+	}
+
+	return strings.TrimSpace(text), nil
 }

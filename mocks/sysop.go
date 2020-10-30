@@ -60,32 +60,18 @@ func (mr *MockSysOpsProviderMockRecorder) GetPathSep() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPathSep", reflect.TypeOf((*MockSysOpsProvider)(nil).GetPathSep))
 }
 
-// CleanPath mocks base method
-func (m *MockSysOpsProvider) CleanPath(path string) string {
+// PathExists mocks base method
+func (m *MockSysOpsProvider) PathExists(path string) bool {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CleanPath", path)
-	ret0, _ := ret[0].(string)
-	return ret0
-}
-
-// CleanPath indicates an expected call of CleanPath
-func (mr *MockSysOpsProviderMockRecorder) CleanPath(path interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CleanPath", reflect.TypeOf((*MockSysOpsProvider)(nil).CleanPath), path)
-}
-
-// FileExists mocks base method
-func (m *MockSysOpsProvider) FileExists(path string) bool {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "FileExists", path)
+	ret := m.ctrl.Call(m, "PathExists", path)
 	ret0, _ := ret[0].(bool)
 	return ret0
 }
 
-// FileExists indicates an expected call of FileExists
-func (mr *MockSysOpsProviderMockRecorder) FileExists(path interface{}) *gomock.Call {
+// PathExists indicates an expected call of PathExists
+func (mr *MockSysOpsProviderMockRecorder) PathExists(path interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FileExists", reflect.TypeOf((*MockSysOpsProvider)(nil).FileExists), path)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PathExists", reflect.TypeOf((*MockSysOpsProvider)(nil).PathExists), path)
 }
 
 // Log mocks base method
@@ -98,4 +84,19 @@ func (m *MockSysOpsProvider) Log(message string) {
 func (mr *MockSysOpsProviderMockRecorder) Log(message interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Log", reflect.TypeOf((*MockSysOpsProvider)(nil).Log), message)
+}
+
+// ReadLine mocks base method
+func (m *MockSysOpsProvider) ReadLine() (string, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReadLine")
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ReadLine indicates an expected call of ReadLine
+func (mr *MockSysOpsProviderMockRecorder) ReadLine() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadLine", reflect.TypeOf((*MockSysOpsProvider)(nil).ReadLine))
 }
