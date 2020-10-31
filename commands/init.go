@@ -9,7 +9,7 @@ import (
 
 const dotfileName = ".dotf"
 
-// Init tries to create the dotfile of dotf under $HOME/.dotf
+// Init tries to create the dotfile of dotf under $HOME/.dotf.
 func Init(sys dotf.SysOpsProvider) error {
 	home := sys.GetEnvVar("HOME")
 
@@ -17,7 +17,7 @@ func Init(sys dotf.SysOpsProvider) error {
 		return errors.New("init: HOME env var is not set")
 	}
 
-	dotfilePath := home + sys.GetPathSep() + dotfileName
+	dotfilePath := sys.CleanPath(home + sys.GetPathSep() + dotfileName)
 
 	if !sys.PathExists(dotfilePath) {
 		return createDotfile(sys, dotfilePath)
@@ -35,6 +35,8 @@ func createDotfile(sys dotf.SysOpsProvider, dotfilePath string) error {
 	if err != nil {
 		return fmt.Errorf("init: %v", err)
 	}
+
+	repoPath = sys.CleanPath(repoPath)
 
 	if !sys.PathExists(repoPath) {
 		return fmt.Errorf("init: path %v does not exist", repoPath)
@@ -68,6 +70,8 @@ func createDotfile(sys dotf.SysOpsProvider, dotfilePath string) error {
 	if err != nil {
 		return fmt.Errorf("init: count not write to file %s: %v", dotfilePath, err)
 	}
+
+	sys.Log("Successfully created file at " + dotfilePath + "\n")
 
 	return nil
 }

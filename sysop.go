@@ -4,6 +4,7 @@ package dotf
 type SysOpsProvider interface {
 	GetEnvVar(s string) string
 	GetPathSep() string
+	CleanPath(path string) string
 	PathExists(path string) bool
 	Log(message string)
 	ReadLine() (string, error)

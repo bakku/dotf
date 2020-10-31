@@ -25,9 +25,14 @@ func (sop *Provider) GetPathSep() string {
 	return string(filepath.Separator)
 }
 
+// CleanPath cleans the given path from common error sources and returns it
+func (sop *Provider) CleanPath(path string) string {
+	return filepath.Clean(path)
+}
+
 // PathExists returns true if the given path exists, otherwise false.
 func (sop *Provider) PathExists(path string) bool {
-	if _, err := os.Stat(filepath.Clean(path)); err == nil {
+	if _, err := os.Stat(path); err == nil {
 		return true
 	}
 

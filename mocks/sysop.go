@@ -5,10 +5,9 @@
 package mocks
 
 import (
-	reflect "reflect"
-
-	x "bakku.dev/dotf"
+	dotf "bakku.dev/dotf"
 	gomock "github.com/golang/mock/gomock"
+	reflect "reflect"
 )
 
 // MockSysOpsProvider is a mock of SysOpsProvider interface
@@ -36,6 +35,7 @@ func (m *MockSysOpsProvider) EXPECT() *MockSysOpsProviderMockRecorder {
 
 // GetEnvVar mocks base method
 func (m *MockSysOpsProvider) GetEnvVar(s string) string {
+	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetEnvVar", s)
 	ret0, _ := ret[0].(string)
 	return ret0
@@ -43,11 +43,13 @@ func (m *MockSysOpsProvider) GetEnvVar(s string) string {
 
 // GetEnvVar indicates an expected call of GetEnvVar
 func (mr *MockSysOpsProviderMockRecorder) GetEnvVar(s interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetEnvVar", reflect.TypeOf((*MockSysOpsProvider)(nil).GetEnvVar), s)
 }
 
 // GetPathSep mocks base method
 func (m *MockSysOpsProvider) GetPathSep() string {
+	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetPathSep")
 	ret0, _ := ret[0].(string)
 	return ret0
@@ -55,11 +57,27 @@ func (m *MockSysOpsProvider) GetPathSep() string {
 
 // GetPathSep indicates an expected call of GetPathSep
 func (mr *MockSysOpsProviderMockRecorder) GetPathSep() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPathSep", reflect.TypeOf((*MockSysOpsProvider)(nil).GetPathSep))
+}
+
+// CleanPath mocks base method
+func (m *MockSysOpsProvider) CleanPath(path string) string {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CleanPath", path)
+	ret0, _ := ret[0].(string)
+	return ret0
+}
+
+// CleanPath indicates an expected call of CleanPath
+func (mr *MockSysOpsProviderMockRecorder) CleanPath(path interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CleanPath", reflect.TypeOf((*MockSysOpsProvider)(nil).CleanPath), path)
 }
 
 // PathExists mocks base method
 func (m *MockSysOpsProvider) PathExists(path string) bool {
+	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "PathExists", path)
 	ret0, _ := ret[0].(bool)
 	return ret0
@@ -67,21 +85,25 @@ func (m *MockSysOpsProvider) PathExists(path string) bool {
 
 // PathExists indicates an expected call of PathExists
 func (mr *MockSysOpsProviderMockRecorder) PathExists(path interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PathExists", reflect.TypeOf((*MockSysOpsProvider)(nil).PathExists), path)
 }
 
 // Log mocks base method
 func (m *MockSysOpsProvider) Log(message string) {
+	m.ctrl.T.Helper()
 	m.ctrl.Call(m, "Log", message)
 }
 
 // Log indicates an expected call of Log
 func (mr *MockSysOpsProviderMockRecorder) Log(message interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Log", reflect.TypeOf((*MockSysOpsProvider)(nil).Log), message)
 }
 
 // ReadLine mocks base method
 func (m *MockSysOpsProvider) ReadLine() (string, error) {
+	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ReadLine")
 	ret0, _ := ret[0].(string)
 	ret1, _ := ret[1].(error)
@@ -90,11 +112,13 @@ func (m *MockSysOpsProvider) ReadLine() (string, error) {
 
 // ReadLine indicates an expected call of ReadLine
 func (mr *MockSysOpsProviderMockRecorder) ReadLine() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadLine", reflect.TypeOf((*MockSysOpsProvider)(nil).ReadLine))
 }
 
 // SerializeConfig mocks base method
-func (m *MockSysOpsProvider) SerializeConfig(c x.Config) ([]byte, error) {
+func (m *MockSysOpsProvider) SerializeConfig(c dotf.Config) ([]byte, error) {
+	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "SerializeConfig", c)
 	ret0, _ := ret[0].([]byte)
 	ret1, _ := ret[1].(error)
@@ -103,11 +127,13 @@ func (m *MockSysOpsProvider) SerializeConfig(c x.Config) ([]byte, error) {
 
 // SerializeConfig indicates an expected call of SerializeConfig
 func (mr *MockSysOpsProviderMockRecorder) SerializeConfig(c interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SerializeConfig", reflect.TypeOf((*MockSysOpsProvider)(nil).SerializeConfig), c)
 }
 
 // WriteFile mocks base method
 func (m *MockSysOpsProvider) WriteFile(path string, content []byte) error {
+	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "WriteFile", path, content)
 	ret0, _ := ret[0].(error)
 	return ret0
@@ -115,5 +141,6 @@ func (m *MockSysOpsProvider) WriteFile(path string, content []byte) error {
 
 // WriteFile indicates an expected call of WriteFile
 func (mr *MockSysOpsProviderMockRecorder) WriteFile(path, content interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "WriteFile", reflect.TypeOf((*MockSysOpsProvider)(nil).WriteFile), path, content)
 }

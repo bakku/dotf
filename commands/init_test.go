@@ -31,11 +31,12 @@ func TestInit_ShouldFailIfReadLineReturnsAnError(t *testing.T) {
 
 	m := mocks.NewMockSysOpsProvider(ctrl)
 
-	m.EXPECT().GetEnvVar(gomock.Eq("HOME")).Return("/home")
+	m.EXPECT().GetEnvVar(gomock.Eq("HOME")).Return("/home/")
 	m.EXPECT().GetPathSep().Return("/")
+	m.EXPECT().CleanPath("/home//.dotf").Return("/home/.dotf")
 	m.EXPECT().PathExists(gomock.Eq("/home/.dotf")).Return(false)
 	m.EXPECT().Log("Insert path to dotfile repo: ")
-	m.EXPECT().ReadLine().Return("", errors.New("ERROR!!"))
+	m.EXPECT().ReadLine().Return("", errors.New("error"))
 
 	err := commands.Init(m)
 
@@ -52,9 +53,11 @@ func TestInit_ShouldFailIfRepoDoesNotExist(t *testing.T) {
 
 	m.EXPECT().GetEnvVar(gomock.Eq("HOME")).Return("/home")
 	m.EXPECT().GetPathSep().Return("/")
+	m.EXPECT().CleanPath("/home/.dotf").Return("/home/.dotf")
 	m.EXPECT().PathExists(gomock.Eq("/home/.dotf")).Return(false)
 	m.EXPECT().Log("Insert path to dotfile repo: ")
 	m.EXPECT().ReadLine().Return("invalid", nil)
+	m.EXPECT().CleanPath("invalid").Return("invalid")
 	m.EXPECT().PathExists(gomock.Eq("invalid")).Return(false)
 
 	err := commands.Init(m)
@@ -72,9 +75,11 @@ func TestInit_ShouldFailIfBackupReadLineReturnsAnError(t *testing.T) {
 
 	m.EXPECT().GetEnvVar(gomock.Eq("HOME")).Return("/home")
 	m.EXPECT().GetPathSep().Return("/")
+	m.EXPECT().CleanPath("/home/.dotf").Return("/home/.dotf")
 	m.EXPECT().PathExists(gomock.Eq("/home/.dotf")).Return(false)
 	m.EXPECT().Log("Insert path to dotfile repo: ")
 	m.EXPECT().ReadLine().Return("/home/repo", nil)
+	m.EXPECT().CleanPath("/home/repo").Return("/home/repo")
 	m.EXPECT().PathExists(gomock.Eq("/home/repo")).Return(true)
 	m.EXPECT().Log("Do you want to create backups of your dotfiles when pulling? (y/n): ")
 	m.EXPECT().ReadLine().Return("", errors.New("error"))
@@ -94,9 +99,11 @@ func TestInit_ShouldFailIfConfigCannotBeSerialized(t *testing.T) {
 
 	m.EXPECT().GetEnvVar(gomock.Eq("HOME")).Return("/home")
 	m.EXPECT().GetPathSep().Return("/")
+	m.EXPECT().CleanPath("/home/.dotf").Return("/home/.dotf")
 	m.EXPECT().PathExists(gomock.Eq("/home/.dotf")).Return(false)
 	m.EXPECT().Log("Insert path to dotfile repo: ")
 	m.EXPECT().ReadLine().Return("/home/repo", nil)
+	m.EXPECT().CleanPath("/home/repo").Return("/home/repo")
 	m.EXPECT().PathExists(gomock.Eq("/home/repo")).Return(true)
 	m.EXPECT().Log("Do you want to create backups of your dotfiles when pulling? (y/n): ")
 	m.EXPECT().ReadLine().Return("blah", nil)
@@ -121,9 +128,11 @@ func TestInit_ShouldFailIfConfigCannotBeWrittenToFile(t *testing.T) {
 
 	m.EXPECT().GetEnvVar(gomock.Eq("HOME")).Return("/home")
 	m.EXPECT().GetPathSep().Return("/")
+	m.EXPECT().CleanPath("/home/.dotf").Return("/home/.dotf")
 	m.EXPECT().PathExists(gomock.Eq("/home/.dotf")).Return(false)
 	m.EXPECT().Log("Insert path to dotfile repo: ")
 	m.EXPECT().ReadLine().Return("/home/repo", nil)
+	m.EXPECT().CleanPath("/home/repo").Return("/home/repo")
 	m.EXPECT().PathExists(gomock.Eq("/home/repo")).Return(true)
 	m.EXPECT().Log("Do you want to create backups of your dotfiles when pulling? (y/n): ")
 	m.EXPECT().ReadLine().Return("n", nil)
@@ -147,9 +156,11 @@ func TestInit_ShouldTerminateSuccessfullyIfNoErrorIsRaised(t *testing.T) {
 
 	m.EXPECT().GetEnvVar(gomock.Eq("HOME")).Return("/home")
 	m.EXPECT().GetPathSep().Return("/")
+	m.EXPECT().CleanPath("/home/.dotf").Return("/home/.dotf")
 	m.EXPECT().PathExists(gomock.Eq("/home/.dotf")).Return(false)
 	m.EXPECT().Log("Insert path to dotfile repo: ")
 	m.EXPECT().ReadLine().Return("/home/repo", nil)
+	m.EXPECT().CleanPath("/home/repo").Return("/home/repo")
 	m.EXPECT().PathExists(gomock.Eq("/home/repo")).Return(true)
 	m.EXPECT().Log("Do you want to create backups of your dotfiles when pulling? (y/n): ")
 	m.EXPECT().ReadLine().Return("y", nil)
@@ -157,6 +168,7 @@ func TestInit_ShouldTerminateSuccessfullyIfNoErrorIsRaised(t *testing.T) {
 		SerializeConfig(gomock.Eq(dotf.Config{"/home/repo", true, []dotf.TrackedFile{}})).
 		Return([]byte("ABC"), nil)
 	m.EXPECT().WriteFile("/home/.dotf", []byte("ABC")).Return(nil)
+	m.EXPECT().Log("Successfully created file at /home/.dotf\n")
 
 	err := commands.Init(m)
 
@@ -173,6 +185,7 @@ func TestInit_ShouldAbortIfDotfFileAlreadyExists(t *testing.T) {
 
 	m.EXPECT().GetEnvVar(gomock.Eq("HOME")).Return("/home")
 	m.EXPECT().GetPathSep().Return("/")
+	m.EXPECT().CleanPath("/home/.dotf").Return("/home/.dotf")
 	m.EXPECT().PathExists(gomock.Eq("/home/.dotf")).Return(true)
 	m.EXPECT().Log(gomock.Eq("/home/.dotf already exists\n"))
 
