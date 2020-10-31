@@ -8,7 +8,7 @@ import (
 )
 
 // Init tries to create the dotfile of dotf under $HOME/.dotf.
-func Init(sys dotf.SysOpsProvider) error {
+func Init(sys dotf.SysOpsProvider, repoPath string) error {
 	home := sys.GetEnvVar("HOME")
 
 	if home == "" {
@@ -18,7 +18,7 @@ func Init(sys dotf.SysOpsProvider) error {
 	dotfilePath := sys.CleanPath(home + sys.GetPathSep() + dotfileName)
 
 	if !sys.PathExists(dotfilePath) {
-		return createDotfile(sys, dotfilePath)
+		return createDotfile(sys, dotfilePath, repoPath)
 	}
 
 	sys.Log(dotfilePath + " already exists\n")
@@ -26,15 +26,8 @@ func Init(sys dotf.SysOpsProvider) error {
 	return nil
 }
 
-func createDotfile(sys dotf.SysOpsProvider, dotfilePath string) error {
-	sys.Log("Insert path to dotfile repo: ")
-	repoPath, err := sys.ReadLine()
-
-	if err != nil {
-		return fmt.Errorf("init: %v", err)
-	}
-
-	repoPath, err = sys.ExpandPath(repoPath)
+func createDotfile(sys dotf.SysOpsProvider, dotfilePath string, repoPath string) error {
+	repoPath, err := sys.ExpandPath(repoPath)
 
 	if err != nil {
 		return fmt.Errorf("init: could not get absolute path: %v", err)

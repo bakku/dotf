@@ -7,18 +7,22 @@ import (
 )
 
 // Remove removes tracked files from dotf.
-func Remove(sys dotf.SysOpsProvider) error {
+func Remove(sys dotf.SysOpsProvider, systemFilePath string) error {
 	dotfilePath, err := getDotfConfigPath(sys)
 
 	if err != nil {
 		return fmt.Errorf("rm: %v", err)
 	}
 
-	return removeTrackedFile(sys, dotfilePath)
+	return removeTrackedFile(sys, dotfilePath, systemFilePath)
 }
 
-func removeTrackedFile(sys dotf.SysOpsProvider, dotfilePath string) error {
-	systemFilePath, err := readAbsoluteFilePath(sys, "Please insert the path of the file you want dotf to stop tracking: ")
+func removeTrackedFile(sys dotf.SysOpsProvider, dotfilePath, systemFilePath string) error {
+	absoluteSystemFilePath, err := sys.ExpandPath(systemFilePath)
+
+	if err != nil {
+		return fmt.Errorf("could not build absolute path: %v", err)
+	}
 
 	if err != nil {
 		return fmt.Errorf("rm: %v", err)
@@ -33,7 +37,7 @@ func removeTrackedFile(sys dotf.SysOpsProvider, dotfilePath string) error {
 	var trackedFileExists bool
 
 	for i, trackedFile := range cfg.TrackedFiles {
-		if trackedFile.PathOnSystem == systemFilePath {
+		if trackedFile.PathOnSystem == absoluteSystemFilePath {
 			trackedFileExists = true
 			cfg.TrackedFiles = append(cfg.TrackedFiles[:i], cfg.TrackedFiles[i+1:]...)
 			break
@@ -41,7 +45,7 @@ func removeTrackedFile(sys dotf.SysOpsProvider, dotfilePath string) error {
 	}
 
 	if !trackedFileExists {
-		return fmt.Errorf("rm: given file is not tracked")
+		return fmt.Errorf("rm: given file is not a tracked file")
 	}
 
 	err = writeConfig(sys, dotfilePath, cfg)

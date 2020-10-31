@@ -6,54 +6,94 @@ import (
 
 	"bakku.dev/dotf/commands"
 	"bakku.dev/dotf/sysop"
+	"github.com/urfave/cli/v2"
 )
 
 func main() {
-	if len(os.Args) != 2 {
-		printHelp()
-	} else {
-		opProvider := &sysop.Provider{}
+	opProvider := &sysop.Provider{}
 
-		var err error
+	app := &cli.App{
+		Name:      "dotf",
+		Usage:     "a simple dotfile manager",
+		UsageText: "dotf command <command arguments>",
+		HideHelp:  true,
+		Commands: []*cli.Command{
+			{
+				Name:      "init",
+				Aliases:   []string{"i"},
+				Usage:     "initialize dotf",
+				ArgsUsage: "<path to dotfile repo>",
+				HideHelp:  true,
+				Action: func(c *cli.Context) error {
+					if c.Args().Len() != 1 {
+						return cli.ShowCommandHelp(c, "init")
+					}
 
-		switch os.Args[1] {
-		case "init":
-			err = commands.Init(opProvider)
-		case "push":
-			fmt.Println("pushing")
-		case "pull":
-			fmt.Println("pulling")
-		case "add":
-			err = commands.Add(opProvider)
-		case "rm":
-			err = commands.Remove(opProvider)
-		default:
-			printHelp()
-		}
+					return commands.Init(opProvider, c.Args().First())
+				},
+			},
+			{
+				Name:      "add",
+				Aliases:   []string{"a"},
+				Usage:     "track a new file",
+				ArgsUsage: "<path to file> <path in repo>",
+				HideHelp:  true,
+				Action: func(c *cli.Context) error {
+					if c.Args().Len() != 2 {
+						return cli.ShowCommandHelp(c, "add")
+					}
 
-		if err != nil {
-			fmt.Printf("%v\n", err)
-			os.Exit(-1)
-		}
+					return commands.Add(opProvider, c.Args().First(), c.Args().Get(1))
+				},
+			},
+			{
+				Name:      "rm",
+				Aliases:   []string{"r"},
+				Usage:     "remove tracking of file",
+				ArgsUsage: "<path to file>",
+				HideHelp:  true,
+				Action: func(c *cli.Context) error {
+					if c.Args().Len() != 1 {
+						return cli.ShowCommandHelp(c, "rm")
+					}
+
+					return commands.Remove(opProvider, c.Args().First())
+				},
+			},
+			{
+				Name:      "pull",
+				Usage:     "copy all dotfiles to the repository and push it to the remote",
+				ArgsUsage: " ",
+				HideHelp:  true,
+				Action: func(c *cli.Context) error {
+					return cli.ShowCommandHelp(c, "pull")
+				},
+			},
+			{
+				Name:      "push",
+				Usage:     "pull the repository and replace all dotfiles",
+				ArgsUsage: " ",
+				HideHelp:  true,
+				Action: func(c *cli.Context) error {
+					return cli.ShowCommandHelp(c, "push")
+				},
+			},
+			{
+				Name:      "list",
+				Aliases:   []string{"l"},
+				Usage:     "show all tracked files",
+				ArgsUsage: " ",
+				HideHelp:  true,
+				Action: func(c *cli.Context) error {
+					return cli.ShowCommandHelp(c, "list")
+				},
+			},
+		},
 	}
-}
 
-func printHelp() {
-	var commandHelpList = []struct {
-		command     string
-		description string
-	}{
-		{"init", "Initialize dotf"},
-		{"push", "Copy all dotfiles in repository and push it to the remote"},
-		{"pull", "Pull the repository and replace all dotfiles from the repository"},
-		{"add", "Add a dotfile to be sync'ed from now on"},
-		{"rm", "Delete a dotfile from the repository"},
-	}
-
-	fmt.Printf("Usage: %s <command>\n", os.Args[0])
-	fmt.Println("Available commands:")
-
-	for _, c := range commandHelpList {
-		fmt.Printf("\t%s\t-\t%s\n", c.command, c.description)
+	err := app.Run(os.Args)
+	if err != nil {
+		fmt.Printf("%v\n", err)
+		os.Exit(-1)
 	}
 }

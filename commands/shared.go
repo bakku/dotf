@@ -25,23 +25,6 @@ func getDotfConfigPath(sys dotf.SysOpsProvider) (string, error) {
 	return dotfilePath, nil
 }
 
-func readAbsoluteFilePath(sys dotf.SysOpsProvider, prompt string) (string, error) {
-	sys.Log(prompt)
-	path, err := sys.ReadLine()
-
-	if err != nil {
-		return "", err
-	}
-
-	path, err = sys.ExpandPath(path)
-
-	if err != nil {
-		return "", fmt.Errorf("could not build absolute path: %v", err)
-	}
-
-	return path, nil
-}
-
 func readConfig(sys dotf.SysOpsProvider, dotfilePath string) (dotf.Config, error) {
 	rawConfig, err := sys.ReadFile(dotfilePath)
 
