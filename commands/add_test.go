@@ -35,12 +35,11 @@ func TestAdd_ShouldAbortIfDotfileDoesNotExist(t *testing.T) {
 	m.EXPECT().GetPathSep().Return("/")
 	m.EXPECT().CleanPath("/home//.dotf").Return("/home/.dotf")
 	m.EXPECT().PathExists(gomock.Eq("/home/.dotf")).Return(false)
-	m.EXPECT().Log("No dotf configuration found. Please run the 'init' command first\n")
 
 	err := commands.Add(m)
 
-	if err != nil {
-		t.Fatalf("Expected err to be nil")
+	if err == nil {
+		t.Fatalf("Expected err not to be nil")
 	}
 }
 
