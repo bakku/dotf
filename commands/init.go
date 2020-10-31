@@ -34,7 +34,11 @@ func createDotfile(sys dotf.SysOpsProvider, dotfilePath string) error {
 		return fmt.Errorf("init: %v", err)
 	}
 
-	repoPath = sys.CleanPath(repoPath)
+	repoPath, err = sys.ExpandPath(repoPath)
+
+	if err != nil {
+		return fmt.Errorf("init: could not get absolute path: %v", err)
+	}
 
 	if !sys.PathExists(repoPath) {
 		return fmt.Errorf("init: path %v does not exist", repoPath)
