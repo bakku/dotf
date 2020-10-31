@@ -24,7 +24,7 @@ func main() {
 		case "pull":
 			fmt.Println("pulling")
 		case "add":
-			fmt.Println("adding")
+			err = commands.Add(opProvider)
 		case "rm":
 			fmt.Println("deleting")
 		default:

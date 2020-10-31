@@ -39,6 +39,11 @@ func (sop *Provider) PathExists(path string) bool {
 	return false
 }
 
+// ExpandPath builds the absolute path for a given path.
+func (sop *Provider) ExpandPath(path string) (string, error) {
+	return filepath.Abs(path)
+}
+
 // Log writes some content to STDOUT.
 func (sop *Provider) Log(message string) {
 	fmt.Print(message)
@@ -61,7 +66,17 @@ func (sop *Provider) SerializeConfig(c dotf.Config) ([]byte, error) {
 	return json.Marshal(c)
 }
 
+// DeserializeConfig deserializes a JSON blob into a dotf.Config struct.
+func (sop *Provider) DeserializeConfig(raw []byte, c *dotf.Config) error {
+	return json.Unmarshal(raw, c)
+}
+
 // WriteFile takes a path and content and (over)writes the content to the given path.
 func (sop *Provider) WriteFile(path string, content []byte) error {
 	return ioutil.WriteFile(path, content, 0644)
+}
+
+// ReadFile takes a path and reads the contents into a byte array.
+func (sop *Provider) ReadFile(path string) ([]byte, error) {
+	return ioutil.ReadFile(path)
 }

@@ -6,8 +6,11 @@ type SysOpsProvider interface {
 	GetPathSep() string
 	CleanPath(path string) string
 	PathExists(path string) bool
+	ExpandPath(path string) (string, error)
 	Log(message string)
 	ReadLine() (string, error)
 	SerializeConfig(c Config) ([]byte, error)
+	DeserializeConfig(raw []byte, c *Config) error
 	WriteFile(path string, content []byte) error
+	ReadFile(path string) ([]byte, error)
 }

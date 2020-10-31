@@ -7,8 +7,6 @@ import (
 	"bakku.dev/dotf"
 )
 
-const dotfileName = ".dotf"
-
 // Init tries to create the dotfile of dotf under $HOME/.dotf.
 func Init(sys dotf.SysOpsProvider) error {
 	home := sys.GetEnvVar("HOME")
