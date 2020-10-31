@@ -7,7 +7,7 @@ import (
 )
 
 func TestPathExists(t *testing.T) {
-	op := sysop.SysOpProvider{}
+	op := sysop.Provider{}
 
 	if op.PathExists("sysop.go") == false {
 		t.Fatal("expected sysop.go to exist")

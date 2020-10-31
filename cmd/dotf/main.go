@@ -12,7 +12,7 @@ func main() {
 	if len(os.Args) != 2 {
 		printHelp()
 	} else {
-		opProvider := &sysop.SysOpProvider{}
+		opProvider := &sysop.Provider{}
 
 		var err error
 

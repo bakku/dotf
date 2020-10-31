@@ -2,23 +2,31 @@ package sysop
 
 import (
 	"bufio"
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
+
+	"bakku.dev/dotf"
 )
 
-type SysOpProvider struct{}
+// Provider implements the dotf.SysOpProvider interface.
+type Provider struct{}
 
-func (sop *SysOpProvider) GetEnvVar(s string) string {
+// GetEnvVar returns an environment variable of the current environment.
+func (sop *Provider) GetEnvVar(s string) string {
 	return os.Getenv(s)
 }
 
-func (sop *SysOpProvider) GetPathSep() string {
+// GetPathSep returns the path separator of the current operating system.
+func (sop *Provider) GetPathSep() string {
 	return string(filepath.Separator)
 }
 
-func (sop *SysOpProvider) PathExists(path string) bool {
+// PathExists returns true if the given path exists, otherwise false.
+func (sop *Provider) PathExists(path string) bool {
 	if _, err := os.Stat(filepath.Clean(path)); err == nil {
 		return true
 	}
@@ -26,11 +34,13 @@ func (sop *SysOpProvider) PathExists(path string) bool {
 	return false
 }
 
-func (sop *SysOpProvider) Log(message string) {
+// Log writes some content to STDOUT.
+func (sop *Provider) Log(message string) {
 	fmt.Print(message)
 }
 
-func (sop *SysOpProvider) ReadLine() (string, error) {
+// ReadLine reads a line from STDIN.
+func (sop *Provider) ReadLine() (string, error) {
 	reader := bufio.NewReader(os.Stdin)
 
 	text, err := reader.ReadString('\n')
@@ -39,4 +49,14 @@ func (sop *SysOpProvider) ReadLine() (string, error) {
 	}
 
 	return strings.TrimSpace(text), nil
+}
+
+// SerializeConfig serializes an instance of dotf.Config to JSON.
+func (sop *Provider) SerializeConfig(c dotf.Config) ([]byte, error) {
+	return json.Marshal(c)
+}
+
+// WriteFile takes a path and content and (over)writes the content to the given path.
+func (sop *Provider) WriteFile(path string, content []byte) error {
+	return ioutil.WriteFile(path, content, 0644)
 }

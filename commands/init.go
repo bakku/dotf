@@ -9,6 +9,7 @@ import (
 
 const dotfileName = ".dotf"
 
+// Init tries to create the dotfile of dotf under $HOME/.dotf
 func Init(sys dotf.SysOpsProvider) error {
 	home := sys.GetEnvVar("HOME")
 
@@ -37,6 +38,18 @@ func createDotfile(sys dotf.SysOpsProvider, dotfilePath string) error {
 
 	if !sys.PathExists(repoPath) {
 		return fmt.Errorf("init: path %v does not exist", repoPath)
+	}
+
+	conf := dotf.Config{repoPath, []dotf.TrackedFile{}}
+	bytes, err := sys.SerializeConfig(conf)
+
+	if err != nil {
+		return fmt.Errorf("init: could not serialize config: %v", err)
+	}
+
+	err = sys.WriteFile(dotfilePath, bytes)
+	if err != nil {
+		return fmt.Errorf("init: count not write to file %s: %v", dotfilePath, err)
 	}
 
 	return nil
