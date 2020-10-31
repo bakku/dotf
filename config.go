@@ -8,6 +8,7 @@ type TrackedFile struct {
 
 // Config contains all attributes to parse the dotf config file.
 type Config struct {
-	Repo         string        `json:"repo"`
-	TrackedFiles []TrackedFile `json:"trackedFiles"`
+	Repo          string        `json:"repo"`
+	CreateBackups bool          `json:"createBackups"`
+	TrackedFiles  []TrackedFile `json:"trackedFiles"`
 }

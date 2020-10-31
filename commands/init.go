@@ -40,7 +40,24 @@ func createDotfile(sys dotf.SysOpsProvider, dotfilePath string) error {
 		return fmt.Errorf("init: path %v does not exist", repoPath)
 	}
 
-	conf := dotf.Config{repoPath, []dotf.TrackedFile{}}
+	var resp string
+
+	for resp != "y" && resp != "n" {
+		sys.Log("Do you want to create backups of your dotfiles when pulling? (y/n): ")
+
+		resp, err = sys.ReadLine()
+		if err != nil {
+			return fmt.Errorf("init: %v", err)
+		}
+	}
+
+	var createBackups bool = false
+
+	if resp == "y" {
+		createBackups = true
+	}
+
+	conf := dotf.Config{repoPath, createBackups, []dotf.TrackedFile{}}
 	bytes, err := sys.SerializeConfig(conf)
 
 	if err != nil {
