@@ -26,7 +26,7 @@ func main() {
 		case "add":
 			err = commands.Add(opProvider)
 		case "rm":
-			fmt.Println("deleting")
+			err = commands.Remove(opProvider)
 		default:
 			printHelp()
 		}
