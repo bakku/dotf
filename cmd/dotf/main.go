@@ -85,7 +85,7 @@ func main() {
 				ArgsUsage: " ",
 				HideHelp:  true,
 				Action: func(c *cli.Context) error {
-					return cli.ShowCommandHelp(c, "list")
+					return commands.List(opProvider)
 				},
 			},
 		},
