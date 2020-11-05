@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"strings"
 
 	"bakku.dev/dotf/commands"
 	"bakku.dev/dotf/sysop"
@@ -72,10 +73,14 @@ func main() {
 			{
 				Name:      "push",
 				Usage:     "copy all dotfiles to the repository and push it to the remote",
-				ArgsUsage: " ",
+				ArgsUsage: "<commit message>",
 				HideHelp:  true,
 				Action: func(c *cli.Context) error {
-					return cli.ShowCommandHelp(c, "push")
+					if c.Args().Len() == 0 {
+						return cli.ShowCommandHelp(c, "push")
+					}
+
+					return commands.Push(opProvider, strings.Join(c.Args().Slice(), " "))
 				},
 			},
 			{

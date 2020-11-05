@@ -15,4 +15,5 @@ type SysOpsProvider interface {
 	ReadFile(path string) ([]byte, error)
 	CopyFile(src, dest string) error
 	UpdateRepo(path string) error
+	CommitRepo(path, message string) error
 }

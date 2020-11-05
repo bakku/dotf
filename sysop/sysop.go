@@ -123,3 +123,33 @@ func (sop *Provider) UpdateRepo(path string) error {
 
 	return nil
 }
+
+// CommitRepo commits and pushes a git repository.
+func (sop *Provider) CommitRepo(path, message string) error {
+	repo, err := git.PlainOpen(path)
+	if err != nil {
+		return fmt.Errorf("could not open repo %s: %v", path, err)
+	}
+
+	workTree, err := repo.Worktree()
+	if err != nil {
+		return fmt.Errorf("could not get worktree of %s: %v", path, err)
+	}
+
+	err = workTree.AddGlob(".")
+	if err != nil {
+		return fmt.Errorf("could not add files to repo %s: %v", path, err)
+	}
+
+	_, err = workTree.Commit(message, &git.CommitOptions{})
+	if err != nil {
+		return fmt.Errorf("could not commit to repo %s: %v", path, err)
+	}
+
+	err = repo.Push(&git.PushOptions{})
+	if err != nil {
+		return fmt.Errorf("could not push repo %s: %v", path, err)
+	}
+
+	return nil
+}
