@@ -62,16 +62,16 @@ func main() {
 			},
 			{
 				Name:      "pull",
-				Usage:     "copy all dotfiles to the repository and push it to the remote",
+				Usage:     "pull the repository and replace all dotfiles",
 				ArgsUsage: " ",
 				HideHelp:  true,
 				Action: func(c *cli.Context) error {
-					return cli.ShowCommandHelp(c, "pull")
+					return commands.Pull(opProvider)
 				},
 			},
 			{
 				Name:      "push",
-				Usage:     "pull the repository and replace all dotfiles",
+				Usage:     "copy all dotfiles to the repository and push it to the remote",
 				ArgsUsage: " ",
 				HideHelp:  true,
 				Action: func(c *cli.Context) error {

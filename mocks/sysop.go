@@ -188,3 +188,31 @@ func (mr *MockSysOpsProviderMockRecorder) ReadFile(path interface{}) *gomock.Cal
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadFile", reflect.TypeOf((*MockSysOpsProvider)(nil).ReadFile), path)
 }
+
+// CopyFile mocks base method
+func (m *MockSysOpsProvider) CopyFile(src, dest string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CopyFile", src, dest)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CopyFile indicates an expected call of CopyFile
+func (mr *MockSysOpsProviderMockRecorder) CopyFile(src, dest interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CopyFile", reflect.TypeOf((*MockSysOpsProvider)(nil).CopyFile), src, dest)
+}
+
+// UpdateRepo mocks base method
+func (m *MockSysOpsProvider) UpdateRepo(path string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateRepo", path)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateRepo indicates an expected call of UpdateRepo
+func (mr *MockSysOpsProviderMockRecorder) UpdateRepo(path interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateRepo", reflect.TypeOf((*MockSysOpsProvider)(nil).UpdateRepo), path)
+}

@@ -13,4 +13,6 @@ type SysOpsProvider interface {
 	DeserializeConfig(raw []byte, c *Config) error
 	WriteFile(path string, content []byte) error
 	ReadFile(path string) ([]byte, error)
+	CopyFile(src, dest string) error
+	UpdateRepo(path string) error
 }

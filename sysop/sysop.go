@@ -10,6 +10,7 @@ import (
 	"strings"
 
 	"bakku.dev/dotf"
+	"github.com/go-git/go-git/v5"
 )
 
 // Provider implements the dotf.SysOpProvider interface.
@@ -79,4 +80,46 @@ func (sop *Provider) WriteFile(path string, content []byte) error {
 // ReadFile takes a path and reads the contents into a byte array.
 func (sop *Provider) ReadFile(path string) ([]byte, error) {
 	return ioutil.ReadFile(path)
+}
+
+// CopyFile copies and overwrites src to dest.
+func (sop *Provider) CopyFile(src, dest string) error {
+	// if src does not exist (yet) do not try to copy
+	if !sop.PathExists(src) {
+		return nil
+	}
+
+	input, err := ioutil.ReadFile(src)
+	if err != nil {
+		return fmt.Errorf("could not read file %s", src)
+	}
+
+	err = ioutil.WriteFile(dest, input, 0644)
+	if err != nil {
+		return fmt.Errorf("could not write file %s", src)
+	}
+
+	return nil
+}
+
+// UpdateRepo updates a git repository.
+func (sop *Provider) UpdateRepo(path string) error {
+	repo, err := git.PlainOpen(path)
+	if err != nil {
+		return fmt.Errorf("could not open repo %s: %v", path, err)
+	}
+
+	workTree, err := repo.Worktree()
+	if err != nil {
+		return fmt.Errorf("could not get worktree of %s: %v", path, err)
+	}
+
+	err = workTree.Pull(&git.PullOptions{RemoteName: "origin"})
+	if err != nil {
+		if err.Error() != "already up-to-date" {
+			return fmt.Errorf("could not pull repo %s: %v", path, err)
+		}
+	}
+
+	return nil
 }
